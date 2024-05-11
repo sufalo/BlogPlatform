@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Platform</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script>
+        function toggleTheme() {
+        const currentTheme = document.body.classList.contains('light-mode') ? 'light-mode' : 'dark-mode';
+        const newTheme = currentTheme === 'light-mode' ? 'dark-mode' : 'light-mode';
+        fetch('/set-theme', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ theme: newTheme })
+        }).then(() => {
+        location.reload();
+        });
+        }
+    </script>
+    <lin>
+</head>
+<body class="<%= theme %>">
+    <button onclick="toggleTheme()">Zmień na <%= theme === 'light-mode' ? 'ciemny' : 'jasny' %> motyw</button>
+    <% if (user) { %>
+        <header>
+            <h1>Witaj, <%= user.username %></h1>
+            <form action="/logout" method="POST">
+                <button type="submit">Wyloguj</button>
+            </form>
+            <a href="/posts/new">
+                <button>Stwórz nowy post</button>
+            </a>
+        </header>
+    <% } else { %>
+        <header>
+            <h1>Witaj na platformie BlogPlatform</h1>
+            <p><a href="/login">Zaloguj sie</a>, aby zacząć postować i komentować.</p>
+        </header>
+    <% } %>
+    <h1>Wszystkie posty</h1>
+    <ul>
+        <% posts.forEach(post => { %>
+            <div>
+                <h2><%= post.title %></h2>
+                <p><%= post.snippet %></p>
+                <a href="/post/<%= post.id %>">Czytaj więcej</a>
+                
+                <% if (user && post.author === user.username) { %>
+                    <a href="/posts/<%= post.id %>/edit">
+                        <button>Edytuj</button>
+                    </a>
+                <% } %>
+            </div>
+        <% }); %>
+        
+    </ul>
+</body>
+</html>

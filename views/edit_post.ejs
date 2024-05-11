@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edytuj post</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="<%= theme %>">
+    <h1>Edytuj post</h1>
+    <form action="/posts/<%= post.id %>" method="POST">
+        <div>
+            <label for="title">Tytuł:</label>
+            <input type="text" id="title" name="title" value="<%= post.title %>" required>
+        </div>
+        <div>
+            <label for="snippet">Fragment:</label>
+            <input type="text" id="snippet" name="snippet" value="<%= post.snippet %>" required>
+        </div>
+        <div>
+            <label for="content">Treść:</label>
+            <textarea id="content" name="content" required><%= post.content %></textarea>
+        </div>
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+</body>
+</html>

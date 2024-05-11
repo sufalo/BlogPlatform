@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= post.title %> - Blog Platform</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="<%= theme %>">
+    <h1><%= post.title %></h1>
+    <% const formattedText = post.content.replace(/\n/g, '<br>'); %>
+    <p><%- formattedText %></p>
+    <p>Data utworzenia: <%= new Date(post.date).toLocaleString('pl-PL') %></p>
+    <p>Utworzony przez: <%= post.author %></p>
+    <a href="/">Powrót do strony głównej</a>
+
+    <h2>Komentarze:</h2>
+    <% comments.forEach(comment => { %>
+        <div>
+            <strong><%= comment.author %></strong> napisał(a) (o <%= new Date(comment.created_at).toLocaleString() %>): 
+            <p><%= comment.content %></p>
+        </div>
+    <% }); %>
+
+    <% if (user) { %>
+        <form action="/posts/<%= post.id %>/comments" method="POST">
+            <div>
+                <label for="content">Dodaj komentarz:</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <button type="submit">Dodaj komentarz</button>
+        </form>
+    <% } else { %>
+            <p><a href="/login">Zaloguj sie lub zarejestruj</a>, aby zacząć komentować.</p>
+    <% } %>
+
+</body>
+</html>
